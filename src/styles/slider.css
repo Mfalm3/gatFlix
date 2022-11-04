@@ -1,0 +1,11 @@
+.slick-prev:before, .slick-next:before {
+  color: #3cb32a !important;
+  opacity: 1 !important;
+}
+  
+@media screen and (min-width: 1280px) {
+  .slick-slide {
+    margin-right: 15px;
+    width: 295px !important;
+}
+}
