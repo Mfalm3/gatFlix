@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import Layout from "../components/layout"
 import CarouselSlider from "../components/slider"
 import MovieCard from "../components/movieCard"
-import GenreCard from "../components/genreCard"
+import GenreCard from "../components/GenreCard"
 
 const IndexPage = () => {
 
