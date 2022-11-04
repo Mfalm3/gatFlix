@@ -5,6 +5,8 @@ require("dotenv").config({
 module.exports = {
   siteMetadata: {
     siteUrl: `https://www.yourdomain.tld`,
+    title: `gatFlix`,
+    description: `Your one stop flix shop for everything entertainment`
   },
   plugins: [
     `gatsby-plugin-postcss`,
