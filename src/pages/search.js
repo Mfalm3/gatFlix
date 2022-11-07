@@ -14,9 +14,7 @@ const SearchPage = ({location})  => {
 
 
   const searchQuery = location.state.query
-  
 
-  
   function getSearch() {
     setLoading(true)
     axios.get(`${process.env.GATSBY_TMDB_BASE_API_URL}/search/movie?api_key=${process.env.TMDB_API}&query=${query}`)
@@ -30,15 +28,10 @@ const SearchPage = ({location})  => {
     })
   }
 
-  
-
   useEffect( () => {
     setQuery(searchQuery)
-  },[query])
-
-  useEffect( () => {
     getSearch()
-  },[])
+  },[query])
 
   return (
     <Layout>

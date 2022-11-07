@@ -90,7 +90,7 @@ const IndexPage = ({ data }) => {
             </div>
             <div className="relative">
               <form onSubmit={searchQuery}>
-                <input type="text" onChange={handleSearchInput} value={query} name="search" id="search" className="absolute rounded-3xl xl:w-full border p-3" placeholder="Search Movie"/>
+                <input type="text" onChange={handleSearchInput} value={query} autoComplete="off" name="search" id="search" className="absolute rounded-3xl xl:w-full border p-3" placeholder="Search Movie"/>
                 <input type="submit" value="Search"  className="absolute right-0 rounded-3xl xl:w-[7vw] p-[0.80rem] bg-green-600 hover:cursor-pointer hover:text-white"/>
               </form>
             </div>
