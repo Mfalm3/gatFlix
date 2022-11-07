@@ -3,6 +3,7 @@ import { graphql, Link } from 'gatsby'
 import { GatsbyImage } from "gatsby-plugin-image"
 import axios from 'axios'
 import { isEmpty } from 'lodash'
+import { PropagateLoader } from 'react-spinners'
 import Layout from '../components/layout'
 import MovieCard from '../components/movieCard'
 import '../styles/text.css'
@@ -29,6 +30,7 @@ query ImgQuery($slug: String) {
 export default function GenreDetails({pageContext, data}) {
 
   const [movies, setMovies] = useState([])
+  const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
   const banner = data.file.childImageSharp.gatsbyImageData
@@ -41,18 +43,22 @@ export default function GenreDetails({pageContext, data}) {
 
   function getMoviesByGenre(){
     const genreMovies = JSON.parse(localStorage.getItem('moviesByGenre'))
+    setLoading(true)
     if( !isEmpty(genreMovies) && genreMovies.genreKey === genre.name ){
       const { genreKey, ...dataItems } = genreMovies
       const movies = Object.values(dataItems)
       setMovies(movies)
+      setLoading(false)
     }else{
       axios.get(url)
       .then((res) =>{
         setMovies(res.data.results)
+        setLoading(false)
         const moviesByGenre = {...{genreKey: genre.name}, ...res.data.results}
         localStorage.setItem('moviesByGenre', JSON.stringify(moviesByGenre))
       }).catch(error => {
         setError(error)
+        setLoading(false)
       })
     }
   }
@@ -60,7 +66,7 @@ export default function GenreDetails({pageContext, data}) {
   useEffect( () => {
     getMoviesByGenre()
   }, [])
-
+  
   return (
     <Layout>
       <div className='xl:px-3'>
@@ -76,15 +82,21 @@ export default function GenreDetails({pageContext, data}) {
 
           <div className='xl:p-16'>
             <div id="genre" className="my-12">
+              
               <h3 className="text-3xl font-bold">{ genre.name } films</h3>
+
+              <div className='text-center my-5'>
+                <PropagateLoader color="#36d7b7" loading={loading} size={20} />
+              </div>
+
               <div className="grid grid-cols-4 gap-4">
-              {movies.length ? ( 
-                movies.map( movie => {
-                  return <MovieCard movie={movie} key={movie.id}/>
-                }) 
-              ) : (
-                <div>No Movies Found</div>
-              )}
+                {movies.length ? ( 
+                  movies.map( movie => {
+                    return <MovieCard movie={movie} key={movie.id}/>
+                  }) 
+                ) : (
+                  <div>No Movies Found</div>
+                )}
               </div>
             </div>
           </div>
