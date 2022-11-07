@@ -41,8 +41,10 @@ export default function GenreDetails({pageContext, data}) {
   
   const url  = `${process.env.GATSBY_TMDB_BASE_API_URL}/discover/movie?api_key=${process.env.TMDB_API}&language=en-US&sort_by=popularity.desc&with_genres=${genre.id}`
 
+  const isBrowser = typeof window !== "undefined"
+
   function getMoviesByGenre(){
-    if( typeof window !== 'undefined' && window.localStorage ){
+    if( isBrowser ){
       const genreMovies = JSON.parse(window.localStorage.getItem('moviesByGenre'))
       setLoading(true)
       if( !isEmpty(genreMovies) && genreMovies.genreKey === genre.name ){
