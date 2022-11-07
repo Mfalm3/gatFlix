@@ -42,31 +42,33 @@ export default function GenreDetails({pageContext, data}) {
   const url  = `${process.env.GATSBY_TMDB_BASE_API_URL}/discover/movie?api_key=${process.env.TMDB_API}&language=en-US&sort_by=popularity.desc&with_genres=${genre.id}`
 
   function getMoviesByGenre(){
-    const genreMovies = JSON.parse(localStorage.getItem('moviesByGenre'))
-    setLoading(true)
-    if( !isEmpty(genreMovies) && genreMovies.genreKey === genre.name ){
-      const { genreKey, ...dataItems } = genreMovies
-      const movies = Object.values(dataItems)
-      setMovies(movies)
-      setLoading(false)
-    }else{
-      axios.get(url)
-      .then((res) =>{
-        setMovies(res.data.results)
+    if( typeof window !== 'undefined' && window.localStorage ){
+      const genreMovies = JSON.parse(window.localStorage.getItem('moviesByGenre'))
+      setLoading(true)
+      if( !isEmpty(genreMovies) && genreMovies.genreKey === genre.name ){
+        const { genreKey, ...dataItems } = genreMovies
+        const movies = Object.values(dataItems)
+        setMovies(movies)
         setLoading(false)
-        const moviesByGenre = {...{genreKey: genre.name}, ...res.data.results}
-        localStorage.setItem('moviesByGenre', JSON.stringify(moviesByGenre))
-      }).catch(error => {
-        setError(error)
-        setLoading(false)
-      })
+      }else{
+        axios.get(url)
+        .then((res) =>{
+          setMovies(res.data.results)
+          setLoading(false)
+          const moviesByGenre = {...{genreKey: genre.name}, ...res.data.results}
+            window.localStorage.setItem('moviesByGenre', JSON.stringify(moviesByGenre))
+        }).catch(error => {
+          setError(error)
+          setLoading(false)
+        })
+      }
     }
   }
 
   useEffect( () => {
     getMoviesByGenre()
   }, [])
-  
+
   return (
     <Layout>
       <div className='xl:px-3'>
