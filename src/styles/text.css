@@ -1,5 +1,6 @@
 .banner-stroke {
-  -webkit-text-fill-color: #A3A3A3;
+  /* -webkit-text-fill-color: #A3A3A3; */
+  -webkit-text-fill-color: #FFF;
   font-family: Impact, Charcoal, sans-serif;
   text-shadow: 4px 4px 0px #334155;
 }
