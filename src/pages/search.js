@@ -9,7 +9,7 @@ const SearchPage = ({location})  => {
 
   const [results, setResults] = useState([])
   const [error, setError] =  useState(false)
-  const [query, setQuery] =  useState(null)
+  const [query, setQuery] =  useState('')
   const [loading, setLoading] =  useState(false)
 
 
@@ -56,7 +56,7 @@ const SearchPage = ({location})  => {
                     return <MovieCard movie={movie} key={movie.id}/>
                   }) 
                 ) : (
-                  <div>No item with the search term has been found</div>
+                  <div className={loading ? 'hidden' : 'block'}>No item with the search term has been found</div>
                 )}
         </div>
 
