@@ -1,7 +1,7 @@
 import * as React from "react"
 import axios from "axios"
 import { useState, useEffect } from "react"
-import { Link, graphql } from 'gatsby'
+import { Link, graphql, navigate } from 'gatsby'
 import { GatsbyImage, getImage } from 'gatsby-plugin-image'
 import { isEmpty } from "lodash"
 import Layout from "../components/layout"
@@ -22,6 +22,7 @@ const IndexPage = ({ data }) => {
   const [trending, setTrending] = useState([])
   const [genres, setGenres] = useState([])
   const [error, setError] = useState('')
+  const [query, setQuery] = useState('')
 
   function getPopular() {
     axios.get(`${process.env.GATSBY_TMDB_BASE_API_URL}/movie/popular?api_key=${process.env.TMDB_API}`)
@@ -58,6 +59,16 @@ const IndexPage = ({ data }) => {
     }
   }
 
+  const handleSearchInput = (event) => {
+    setQuery(event.target.value)
+  }
+
+  const searchQuery = (event) => {
+    event.preventDefault()
+
+    navigate('/search', { state: { query }})
+  }
+
   useEffect( () => {
     getTrending()
     getPopular()
@@ -78,8 +89,10 @@ const IndexPage = ({ data }) => {
               <h5 className="text-3xl font-semibold text-white">Lots of fun films to binge. Look around</h5>
             </div>
             <div className="relative">
-              <input type="text" name="search" id="search" className="absolute rounded-3xl xl:w-full border p-3" placeholder="Search Movie"/>
-              <input type="submit" value="Search"  className="absolute right-0 rounded-3xl xl:w-[7vw] p-[0.80rem] bg-green-600 hover:cursor-pointer hover:text-white"/>
+              <form onSubmit={searchQuery}>
+                <input type="text" onChange={handleSearchInput} value={query} name="search" id="search" className="absolute rounded-3xl xl:w-full border p-3" placeholder="Search Movie"/>
+                <input type="submit" value="Search"  className="absolute right-0 rounded-3xl xl:w-[7vw] p-[0.80rem] bg-green-600 hover:cursor-pointer hover:text-white"/>
+              </form>
             </div>
           </div>
         </div>
